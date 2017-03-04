@@ -1,3 +1,4 @@
 jinja2
 markdown
+python-frontmatter
 pyyaml
