@@ -26,7 +26,7 @@ def strip_path(base, path):
 def gen(base, out):
     env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True, loader=jinja2.FileSystemLoader(base))
     env.filters['render'] = _render
-    env.filters['markdown'] = lambda x: markdown.markdown(x.decode('utf-8', 'replace'))
+    env.filters['markdown'] = lambda x: markdown.markdown
     env.filters['date'] = lambda x: x.strftime('%Y-%m-%d')
     env.filters['rfc822'] = lambda x: formatdate(time.mktime(x.timetuple()))
     env.filters['datesort'] = lambda x: sorted(x, key=lambda k: datekey(k))
@@ -48,7 +48,7 @@ def gen(base, out):
         source, render = map(template.get, ('source', 'render'), (None, ''))
         if source is not None:
             if render:
-                source = open(os.path.join(base, render), 'r').read()
+                source = open(os.path.join(base, render), 'r').read().decode('utf-8')
             ctx = {cat: templates for cat, templates in tree.items() if cat}
             ctx.update(tree=tree, **template)
             data = env.from_string(source).render(**ctx)
