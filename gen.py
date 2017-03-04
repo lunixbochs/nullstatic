@@ -40,7 +40,8 @@ def gen(base, out):
                 post = frontmatter.load(path)
                 data = {'name': name.rsplit('.', 1)[0], 'src': path, 'source': post.content}
                 data.update(post)
-                data['url'] = data.get('url', data['name'])
+                data['ext'] = data.get('ext', (os.path.splitext(data.get('render', ''))[1] if not '.' in data['name'] else ''))
+                data['url'] = data.get('url', data['name']) + data['ext']
                 data['dst'] = os.path.join(out, os.path.dirname(strip_path(base, path)), data['url'])
                 tree[root].append(data)
 
@@ -55,8 +56,7 @@ def gen(base, out):
             dstdir = os.path.dirname(template['dst'])
             if not os.path.exists(dstdir):
                 os.makedirs(dstdir)
-            ext = template.get('ext', os.path.splitext(render)[1] if not '.' in name else '')
-            with open(template['dst'] + ext, 'w') as o:
+            with open(template['dst'], 'w') as o:
                 o.write(data.encode('utf-8'))
 
 if __name__ == '__main__':
