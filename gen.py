@@ -50,12 +50,12 @@ def gen(base, out):
             if render:
                 source = open(os.path.join(base, render), 'r').read()
             ctx = {cat: templates for cat, templates in tree.items() if cat}
-            ctx.update(template)
+            ctx.update(tree=tree, **template)
             data = env.from_string(source).render(**ctx)
             dstdir = os.path.dirname(template['dst'])
             if not os.path.exists(dstdir):
                 os.makedirs(dstdir)
-            ext = template.get('ext', os.path.splitext(path.rsplit('.', 1)[0])[1] or os.path.splitext(render)[1])
+            ext = template.get('ext', os.path.splitext(render)[1] if not '.' in name else '')
             with open(template['dst'] + ext, 'w') as o:
                 o.write(data.encode('utf-8'))
 
