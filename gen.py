@@ -26,7 +26,7 @@ def strip_path(base, path):
 def gen(base, out):
     env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True, loader=jinja2.FileSystemLoader(base))
     env.filters['render'] = _render
-    env.filters['markdown'] = lambda x: markdown.markdown
+    env.filters['markdown'] = markdown.markdown
     env.filters['date'] = lambda x: x.strftime('%Y-%m-%d')
     env.filters['rfc822'] = lambda x: formatdate(time.mktime(x.timetuple()))
     env.filters['datesort'] = lambda x: sorted(x, key=lambda k: datekey(k))
